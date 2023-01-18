@@ -1,6 +1,6 @@
 <header >
     <nav class="navbar navbar-expand-md navbar-dark shadow-sm">
-        <div class="container">
+        <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center " href="{{ url('/') }}">
                 <div class="logo_laravel">
                     <h3>MyPortfolio</h3>
