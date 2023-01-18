@@ -21,11 +21,11 @@
                         <div class="btns">
                             <a href=" {{ route('admin.projects.show', $project) }} " title="show" class="btn btn-primary"><i
                                     class="fa-regular fa-eye"></i></a>
-                            {{-- <a href=" {{ route('projects.edit', $project) }} " title="edit" class="btn btn-warning"><i
+                            <a href=" {{ route('admin.projects.edit', $project) }} " title="edit" class="btn btn-warning"><i
                                     class="fa-solid fa-pen-to-square"></i></a>
 
 
-                            <form class="d-inline" action=" {{ route('projects.destroy', $project) }} " method="POST"
+                            <form class="d-inline" action=" {{ route('admin.projects.destroy', $project) }} " method="POST"
                                 onsubmit="return confirm('Sei sicuro di voler eliminare {{ $project->name }} ')">
                                 @csrf
                                 @method('DELETE')
@@ -33,7 +33,7 @@
                                 <button class="btn btn-danger" title="delete">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
-                            </form> --}}
+                            </form>
                         </div>
                     </td>
                 </tr>
