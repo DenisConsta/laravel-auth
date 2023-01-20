@@ -19,7 +19,8 @@ return new class extends Migration {
             $table->string('slug', 75)->unique();
             $table->string('client_name', 100);
             $table->text('summary')->nullable();
-            $table->string('cover_image');
+            $table->string('cover_image')->nullable();
+            $table->string('original_cover_image')->nullable();
 
             $table->timestamps();
         });

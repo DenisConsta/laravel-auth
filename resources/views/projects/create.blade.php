@@ -4,7 +4,7 @@
     <div class="bg-dark py-5">
         <div class="container text-light">
 
-            <form action=" {{ route('admin.projects.store') }} " method="POST">
+            <form action=" {{ route('admin.projects.store') }} " method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- ? name --}}
@@ -24,14 +24,17 @@
                 {{-- ? cover_image --}}
                 <div class="mb-3">
                     <label for="cover_image" class="form-label">Image</label>
-                    <input type="text" name="cover_image"
-                        class="form-control bg-dark text-light @error('cover_image')
+                    <input onchange="showImage(event)" type="file" name="cover_image"
+                        class="form-control bg-dark text-light mb-3 @error('cover_image')
                     is-invalid  @enderror"
                         id="cover_image" placeholder="inserire l'url dell'immagine" value=" {{old('cover_image')}} ">
                     <div class="invalid-feedback" >
                         @error('cover_image')
                             {{ $message }}
                         @enderror
+                    </div>
+                    <div>
+                        <img width="300" id="preview_image" src="  " alt="">
                     </div>
                 </div>
 
@@ -49,7 +52,7 @@
                     </div>
                 </div>
 
-                {{-- ? Series --}}
+                {{-- ? summary --}}
                 <div class="mb-3">
                     <label for="summary" class="form-label">summary</label>
                     <input type="text" name="summary"
@@ -70,4 +73,12 @@
 
         </div>
     </div>
+
+    <script>
+        function showImage(event) {
+            const tagImage = document.getElementById('preview_image');
+            tagImage.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+
 @endsection

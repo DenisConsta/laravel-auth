@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
-use App\Http\Requests\StoreProjectRequest;
-use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -36,15 +36,21 @@ class ProjectController extends Controller
      * @param  \App\Http\Requests\StoreProjectRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProjectRequest $request)
+    public function store(ProjectRequest $request)
     {
         $form_data = $request->all();
-        $new_project = new Project();
+        if(array_key_exists('cover_image', $form_data)) {
+            $form_data['original_cover_image'] = $request->file('cover_image')->getClientOriginalName();
+            $form_data['cover_image'] = Storage::put('uploads', $form_data['cover_image']);
+        }
 
         $form_data['slug'] = Project::generateSlug($form_data['name']);
-        $new_project->fill($form_data);
 
-        $new_project->save();
+        /* $new_project = new Project();
+        $new_project->fill($form_data);
+        $new_project->save(); */
+
+        $new_project = Project::create($form_data);
 
         return redirect()->route('admin.projects.index');
     }
@@ -78,7 +84,7 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProjectRequest $request, Project $project)
+    public function update(ProjectRequest $request, Project $project)
     {
         $form_data = $request->all();
         if ($form_data['name'] != $project->title)
