@@ -37,7 +37,14 @@
                         @enderror
                     </div>
                     <div>
-                        <img width="300" id="preview_image" src=" {{asset('storage/' . $project['cover_image']) }} " alt="">
+                        {{-- <img width="300" id="preview_image" src=" {{ asset('storage/' . $project['cover_image']) }} "
+                            alt=""> --}}
+
+                        <img width="300" class="my-3" id="preview_image"
+                            src="{{ str_starts_with($project->cover_image, 'https:')
+                                ? $project->cover_image
+                                : asset('storage/' . $project->cover_image) }}"
+                            alt="{{ $project->name }}">
                     </div>
                 </div>
 
@@ -57,12 +64,17 @@
                 </div>
 
                 {{-- ? Series --}}
-                <div class="mb-3">
+                <div class="mb-3 text-dark">
                     <label for="summary" class="form-label">summary</label>
-                    <input type="text" name="summary"
+
+                    <textarea name="summary" id="text" rows="10" class=" @error('summary')
+                    is-invalid  @enderror">{{old('text', $project->summary)}}</textarea>
+
+                    {{-- <input type="text" name="summary"
                         class="form-control bg-dark text-light @error('summary')
                     is-invalid  @enderror"
-                        id="summary" placeholder="inserire il summary " value=" {{ old('summary', $project->summary) }} ">
+                        id="summary" placeholder="inserire il summary " value=" {{ old('summary', $project->summary) }} "> --}}
+
                     <div class="invalid-feedback">
                         @error('summary')
                             {{ $message }}
@@ -78,10 +90,17 @@
     </div>
 
     <script>
+        ClassicEditor
+            .create(document.querySelector('#text'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
         function showImage(event) {
             const tagImage = document.getElementById('preview_image');
             tagImage.src = URL.createObjectURL(event.target.files[0]);
         }
     </script>
-
 @endsection

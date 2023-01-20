@@ -16,8 +16,26 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(10);
-        return view('projects.index', compact('projects'));
+        /* $projects = Project::paginate(10);
+        return view('projects.index', compact('projects')); */
+
+
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];
+            $projects = Project::where('name', 'like', "%$search%")->paginate(10);
+        } else {
+            $projects = Project::orderBy('id', 'desc')->paginate(10);
+        }
+        $direction = 'desc';
+        return view('projects.index', compact('projects', 'direction'));
+    }
+
+    public function orderby($column, $direction)
+    {
+        $direction = $direction === 'desc' ? 'asc' : 'desc';
+        $projects = Project::orderby($column, $direction)->paginate(10);
+        return view('projects.index', compact('projects', 'direction'));
+
     }
 
     /**
@@ -39,7 +57,7 @@ class ProjectController extends Controller
     public function store(ProjectRequest $request)
     {
         $form_data = $request->all();
-        if(array_key_exists('cover_image', $form_data)) {
+        if (array_key_exists('cover_image', $form_data)) {
             $form_data['original_cover_image'] = $request->file('cover_image')->getClientOriginalName();
             $form_data['cover_image'] = Storage::put('uploads', $form_data['cover_image']);
         }
@@ -50,9 +68,9 @@ class ProjectController extends Controller
         $new_project->fill($form_data);
         $new_project->save(); */
 
-        $new_project = Project::create($form_data);
+        $project = Project::create($form_data);
 
-        return redirect()->route('admin.projects.index');
+        return redirect()->route('admin.projects.index')->with('success', 'Project ' . '<strong>' . $project->name . '</strong>' . ' added successfully');
     }
 
     /**
@@ -88,9 +106,9 @@ class ProjectController extends Controller
     {
         $form_data = $request->all();
 
-        if(array_key_exists('cover_image', $form_data)) {
+        if (array_key_exists('cover_image', $form_data)) {
 
-            if($project->cover_image){
+            if ($project->cover_image) {
                 Storage::disk('public')->delete($project->cover_image);
             }
 
@@ -102,7 +120,7 @@ class ProjectController extends Controller
             $form_data['slug'] = Project::generateSlug($form_data['name']);
         $project->update($form_data);
 
-        return redirect()->route('admin.projects.index');
+        return redirect()->route('admin.projects.index')->with('success', 'Project ' . '<strong>' . $project->name . '</strong>' . ' updated successfully');
     }
 
     /**
@@ -113,11 +131,11 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        if($project->cover_image){
+        if ($project->cover_image) {
             Storage::disk('public')->delete($project->cover_image);
         }
 
         $project->delete();
-        return redirect()->route('admin.projects.index');
+        return redirect()->route('admin.projects.index')->with('success', 'Project ' . '<strong>' . $project->name . '</strong>' . ' deleted successfully');
     }
 }

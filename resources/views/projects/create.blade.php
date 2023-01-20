@@ -13,7 +13,7 @@
                     <input type="text" name="name"
                         class="form-control bg-dark text-light @error('name')
                     is-invalid  @enderror"
-                        id="name" placeholder="inserire il nome del progetto" value=" {{old('name')}} ">
+                        id="name" placeholder="inserire il nome del progetto" value=" {{ old('name') }} ">
                     <div class="invalid-feedback">
                         @error('name')
                             {{ $message }}
@@ -27,8 +27,8 @@
                     <input onchange="showImage(event)" type="file" name="cover_image"
                         class="form-control bg-dark text-light @error('cover_image')
                     is-invalid  @enderror"
-                        id="cover_image" placeholder="inserire l'url dell'immagine" value=" {{old('cover_image')}} ">
-                    <div class="invalid-feedback" >
+                        id="cover_image" placeholder="inserire l'url dell'immagine" value=" {{ old('cover_image') }} ">
+                    <div class="invalid-feedback">
                         @error('cover_image')
                             {{ $message }}
                         @enderror
@@ -44,7 +44,7 @@
                     <input type="text" name="client_name"
                         class="form-control bg-dark text-light @error('client_name')
                     is-invalid  @enderror"
-                        id="client_name" placeholder="inserire il client_name " value=" {{old('client_name')}} ">
+                        id="client_name" placeholder="inserire il client_name " value=" {{ old('client_name') }} ">
                     <div class="invalid-feedback">
                         @error('client_name')
                             {{ $message }}
@@ -53,12 +53,17 @@
                 </div>
 
                 {{-- ? summary --}}
-                <div class="mb-3">
+                <div class="mb-3 text-dark">
                     <label for="summary" class="form-label">summary</label>
-                    <input type="text" name="summary"
+                    {{-- <input type="text" name="summary"
                         class="form-control bg-dark text-light @error('summary')
                     is-invalid  @enderror"
-                        id="summary" placeholder="inserire il summary " value=" {{old('summary')}} ">
+                        id="summary" placeholder="inserire il summary " value=" {{old('summary')}} "> --}}
+
+                    <textarea name="summary" id="text" rows="10"
+                        class=" @error('summary')
+                        is-invalid  @enderror">{{ old('text') }}</textarea>
+
                     <div class="invalid-feedback">
                         @error('summary')
                             {{ $message }}
@@ -75,10 +80,17 @@
     </div>
 
     <script>
+        ClassicEditor
+            .create(document.querySelector('#text'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
         function showImage(event) {
             const tagImage = document.getElementById('preview_image');
             tagImage.src = URL.createObjectURL(event.target.files[0]);
         }
     </script>
-
 @endsection

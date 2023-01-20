@@ -24,6 +24,17 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto ">
                     <!-- Authentication Links -->
+
+                    @auth
+                    <li>
+                        <form  action="{{route('admin.projects.index')}}" method="GET">
+                            @csrf
+                            <input class="form-control d-inline-block w-75" name="search" type="text" placeholder="Cosa cerchi?">
+                            <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </li>
+                    @endauth
+
                     @guest
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
