@@ -25,7 +25,7 @@
                 <div class="mb-3">
                     <label for="cover_image" class="form-label">Image</label>
                     <input onchange="showImage(event)" type="file" name="cover_image"
-                        class="form-control bg-dark text-light mb-3 @error('cover_image')
+                        class="form-control bg-dark text-light @error('cover_image')
                     is-invalid  @enderror"
                         id="cover_image" placeholder="inserire l'url dell'immagine" value=" {{old('cover_image')}} ">
                     <div class="invalid-feedback" >
@@ -34,7 +34,7 @@
                         @enderror
                     </div>
                     <div>
-                        <img width="300" id="preview_image" src="  " alt="">
+                        <img width="300" id="preview_image" src="  " alt="" class="my-2">
                     </div>
                 </div>
 
