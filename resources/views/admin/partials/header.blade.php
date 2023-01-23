@@ -29,7 +29,7 @@
                     <li>
                         <form  action="{{route('admin.projects.index')}}" method="GET">
                             @csrf
-                            <input class="form-control d-inline-block w-75" name="search" type="text" placeholder="Cosa cerchi?">
+                            <input class="form-control d-inline-block w-75" name="search" type="text" placeholder="Cosa cerchi?" value="{{ isset($_GET['search']) ? $_GET['search'] : '' }}">
                             <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
                     </li>

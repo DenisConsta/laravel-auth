@@ -55,7 +55,7 @@
                         class="form-control bg-dark text-light @error('client_name')
                     is-invalid  @enderror"
                         id="client_name" placeholder="inserire il client_name "
-                        value=" {{ old('client_name', $project->client_name) }} ">
+                        value=" {{  old('client_name', $project->client_name) }} ">
                     <div class="invalid-feedback">
                         @error('client_name')
                             {{ $message }}
@@ -63,12 +63,12 @@
                     </div>
                 </div>
 
-                {{-- ? Series --}}
+                {{-- ? summary --}}
                 <div class="mb-3 text-dark">
                     <label for="summary" class="form-label">summary</label>
 
                     <textarea name="summary" id="text" rows="10" class=" @error('summary')
-                    is-invalid  @enderror">{{old('text', $project->summary)}}</textarea>
+                    is-invalid  @enderror">{{old('summary', $project->summary)}}</textarea>
 
                     {{-- <input type="text" name="summary"
                         class="form-control bg-dark text-light @error('summary')

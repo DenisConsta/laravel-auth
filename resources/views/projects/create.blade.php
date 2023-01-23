@@ -62,7 +62,7 @@
 
                     <textarea name="summary" id="text" rows="10"
                         class=" @error('summary')
-                        is-invalid  @enderror">{{ old('text') }}</textarea>
+                        is-invalid  @enderror">{{ old('summary') }}</textarea>
 
                     <div class="invalid-feedback">
                         @error('summary')

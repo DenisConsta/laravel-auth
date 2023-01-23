@@ -14,18 +14,20 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
         /* $projects = Project::paginate(10);
         return view('projects.index', compact('projects')); */
 
+        /* $search = $_GET['search'];
+        $projects = Project::where('name', 'like', "%$search%")->paginate(10); */
+        /* if (isset($_GET['search'])) {
+        $projects = $this->search();
+        } else { */
+        $projects = $this->search() ?? Project::orderBy('id', 'desc')->paginate(10);
 
-        if (isset($_GET['search'])) {
-            $search = $_GET['search'];
-            $projects = Project::where('name', 'like', "%$search%")->paginate(10);
-        } else {
-            $projects = Project::orderBy('id', 'desc')->paginate(10);
-        }
         $direction = 'desc';
         return view('projects.index', compact('projects', 'direction'));
     }
@@ -33,9 +35,18 @@ class ProjectController extends Controller
     public function orderby($column, $direction)
     {
         $direction = $direction === 'desc' ? 'asc' : 'desc';
-        $projects = Project::orderby($column, $direction)->paginate(10);
-        return view('projects.index', compact('projects', 'direction'));
+        $projects = $this->search() ?? Project::orderby($column, $direction)->paginate(10);
 
+        return view('projects.index', compact('projects', 'direction'));
+    }
+
+    public function search()
+    {
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];
+            return Project::where('name', 'like', "%$search%")->paginate(10);
+        }
+        return null;
     }
 
     /**
@@ -63,11 +74,6 @@ class ProjectController extends Controller
         }
 
         $form_data['slug'] = Project::generateSlug($form_data['name']);
-
-        /* $new_project = new Project();
-        $new_project->fill($form_data);
-        $new_project->save(); */
-
         $project = Project::create($form_data);
 
         return redirect()->route('admin.projects.index')->with('success', 'Project ' . '<strong>' . $project->name . '</strong>' . ' added successfully');
